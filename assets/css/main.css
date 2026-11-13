@@ -1,0 +1,219 @@
+/* ==========================================================================
+   Undangan Pernikahan Ivan & Dinni — gaya tambahan
+   Dimuat paling akhir, setelah pustaka Elementor dan page.css.
+
+   Isi:
+   1. Dasar
+   2. Cover (sampul pembuka)
+   3. Panel kiri khusus desktop
+   4. Scrollbar desktop
+   5. Musik
+   6. Ikon lightbox galeri
+   ========================================================================== */
+
+/* 1. Dasar
+   ========================================================================== */
+
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-text-size-adjust: 100%;
+}
+
+html {
+  scroll-behavior: auto !important;
+}
+
+body {
+  overflow-x: hidden !important;
+  /* cegah zoom cubit, geser tetap bisa */
+  touch-action: pan-x pan-y;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.elementor-button-wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* teks multi-baris (alamat, cerita) */
+.niku-multiline {
+  white-space: normal;
+}
+
+.niku-multiline br {
+  display: block;
+  margin: 0;
+  line-height: 1.5;
+  content: "";
+}
+
+/* 2. Cover (sampul pembuka)
+   Status diatur main.js lewat class di <body>:
+   is-cover-locked → is-cover-open → is-cover-closed
+   ========================================================================== */
+
+#sec {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
+  opacity: 1;
+  visibility: visible;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* hanya isi cover (#kolom) yang menangkap sentuhan */
+  pointer-events: none;
+}
+
+#kolom {
+  pointer-events: auto;
+}
+
+#open {
+  cursor: pointer;
+}
+
+/* halaman tidak bisa digulir selama cover belum dibuka */
+body.is-cover-locked {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow-y: scroll;
+}
+
+/* cover bergeser ke atas sambil memudar */
+body.is-cover-open #kolom {
+  transform: translateY(-100%);
+  transition: 1.5s ease-in-out;
+}
+
+body.is-cover-open #sec {
+  opacity: 0;
+  transition: 1.5s ease-in-out;
+}
+
+body.is-cover-closed #sec {
+  visibility: hidden;
+}
+
+/* 3. Panel kiri khusus desktop
+   Kolom undangan selebar 500px di kanan, sisanya diisi panel ini.
+   ========================================================================== */
+
+#desk_cov {
+  top: 0;
+  left: 0;
+  width: calc(100% - 500px);
+  height: 100vh;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) and (max-width: 900px) {
+  #desk_cov {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  #desk_cov {
+    display: none;
+  }
+}
+
+/* 4. Scrollbar desktop
+   ========================================================================== */
+
+@media (min-width: 990px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    background-clip: content-box;
+    border: 2px solid transparent;
+    border-radius: 20px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+  }
+}
+
+/* 5. Musik
+   Tombol musik berdenyut bila browser menolak memutar otomatis.
+   ========================================================================== */
+
+.idb-attention {
+  animation: idb-pulse 0.8s ease-in-out 3;
+}
+
+@keyframes idb-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* 6. Ikon lightbox galeri
+   Font ikon Elementor (eicons) tidak ikut terbawa dari WordPress,
+   jadi ikon tombol lightbox digambar dengan SVG.
+   ========================================================================== */
+
+.elementor-lightbox [class^="eicon-"] {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.elementor-lightbox .eicon-close {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M5 5l14 14M19 5L5 19'/%3E%3C/svg%3E");
+}
+
+.elementor-lightbox .eicon-chevron-left {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 4l-8 8 8 8'/%3E%3C/svg%3E");
+}
+
+.elementor-lightbox .eicon-chevron-right {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4l8 8-8 8'/%3E%3C/svg%3E");
+}
+
+.elementor-lightbox .eicon-zoom-in-bold {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6'/%3E%3C/svg%3E");
+}
+
+.elementor-lightbox .eicon-zoom-out-bold {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L21 21M7.5 10.5h6'/%3E%3C/svg%3E");
+}
+
+.elementor-lightbox .eicon-frame-expand {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5'/%3E%3C/svg%3E");
+}
+
+.elementor-lightbox .eicon-frame-minimize {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5'/%3E%3C/svg%3E");
+}

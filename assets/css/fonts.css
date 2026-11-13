@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Font kustom (berkas ada di assets/fonts/)
+   Font Google (Caudex, Vidaloka, dst.) dimuat lewat <link> di index.html.
+   ========================================================================== */
+
+@font-face {
+  font-family: "analogue";
+  src: url("../fonts/analogue.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "parisienne";
+  src: url("../fonts/parisienne.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "romauntgaolines";
+  src: url("../fonts/romaunt-gaolines.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "aston-script";
+  src: url("../fonts/aston-script.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
