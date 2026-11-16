@@ -9,6 +9,9 @@
    4. Scrollbar desktop
    5. Musik
    6. Ikon lightbox galeri
+   7. Zoom foto mempelai pria
+   8. Foto DSC_1449: latar "Save The Date"
+   9. Foto DSC_1449: bingkai di bagian penutup
    ========================================================================== */
 
 /* 1. Dasar
@@ -216,4 +219,114 @@ body.is-cover-closed #sec {
 
 .elementor-lightbox .eicon-frame-minimize {
   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5'/%3E%3C/svg%3E");
+}
+
+/* 7. Zoom foto mempelai pria
+   Bingkai oval tetap 170x260; fotonya diperbesar di dalamnya.
+   Atur dua nilai di bawah:
+   --zoom     1 = tanpa zoom, 1.5 = diperbesar 1,5x, 2 = dua kali
+   --fokus-y  titik yang jadi pusat zoom, dari atas foto (0%) ke bawah (100%);
+              wajah sekitar 40%. Naikkan angkanya bila wajah terpotong di atas.
+   ========================================================================== */
+
+.elementor-27243 .elementor-element.elementor-element-5a5bdacf {
+  --zoom: 1.2;
+  --fokus-y: 72%;
+}
+
+.elementor-27243
+  .elementor-element.elementor-element-5a5bdacf
+  > .elementor-widget-container {
+  box-sizing: border-box;
+  width: 170px;
+  height: 260px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  border: 2px solid #7c2527;
+  border-radius: 500px;
+}
+
+/* border dan lengkungan pindah ke wadah di atas, supaya ikut terpotong rapi */
+.elementor-27243 .elementor-element.elementor-element-5a5bdacf img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  object-position: 50% var(--fokus-y);
+  transform: scale(var(--zoom));
+  transform-origin: 50% var(--fokus-y);
+}
+
+/* 8. Foto DSC_1449 sebagai latar "Save The Date"
+   Fotonya tegak (portrait) dan bagian ini lebih pendek, jadi hanya sebagian
+   foto yang terlihat; yang bisa diatur adalah bagian mana dan seberapa dekat.
+   --zoom     1 = pas selebar bagian itu, 1.3 = diperbesar 30%
+   --fokus-x  geser kiri-kanan (berguna bila zoom > 1): 0% kiri, 50% tengah, 100% kanan
+   --fokus-y  bagian foto yang tampil: 0% = atas foto, 50% = tengah, 100% = bawah
+   ========================================================================== */
+
+.elementor-27243 .elementor-element.elementor-element-57dc2aaf {
+  --zoom: 1;
+  --fokus-x: 50%;
+  --fokus-y: 43%;
+}
+
+.elementor-27243
+  .elementor-element.elementor-element-57dc2aaf:not(
+    .elementor-motion-effects-element-type-background
+  ),
+.elementor-27243
+  .elementor-element.elementor-element-57dc2aaf
+  > .elementor-motion-effects-container
+  > .elementor-motion-effects-layer {
+  background-repeat: no-repeat;
+  background-position: var(--fokus-x) var(--fokus-y);
+  background-size: calc(100% * var(--zoom)) auto;
+}
+
+/* 9. Foto DSC_1449 di bingkai lengkung bagian penutup
+   Bingkai tetap 170x260; fotonya diperbesar di dalamnya.
+   --zoom     1 = tanpa zoom, 1.5 = diperbesar 1,5x, 2 = dua kali
+   --fokus-x  titik pusat zoom, kiri-kanan: 0% kiri, 50% tengah, 100% kanan
+   --fokus-y  titik pusat zoom, atas-bawah: 0% atas, 100% bawah (wajah sekitar 40%)
+   ========================================================================== */
+
+.elementor-27243 .elementor-element.elementor-element-1ea606fd {
+  --zoom: 1;
+  --fokus-x: 50%;
+  --fokus-y: 40%;
+}
+
+.elementor-27243
+  .elementor-element.elementor-element-1ea606fd
+  > .elementor-widget-container {
+  box-sizing: border-box;
+  width: 170px;
+  height: 260px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  border: 3.5px solid #7c2527;
+  border-radius: 200px 200px 0 0;
+}
+
+@media (max-width: 767px) {
+  .elementor-27243
+    .elementor-element.elementor-element-1ea606fd
+    > .elementor-widget-container {
+    border-width: 4px;
+  }
+}
+
+/* border dan lengkungan pindah ke wadah di atas, supaya ikut terpotong rapi */
+.elementor-27243 .elementor-element.elementor-element-1ea606fd img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  transform: scale(var(--zoom));
+  transform-origin: var(--fokus-x) var(--fokus-y);
 }
