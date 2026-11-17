@@ -3,3 +3,6 @@ backup-asli.zip
 
 # konfigurasi alat bantu lokal
 .claude/
+
+# foto asli resolusi penuh sebelum dikompres (tetap disimpan lokal)
+_foto-asli/

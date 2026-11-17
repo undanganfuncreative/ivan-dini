@@ -1,0 +1,401 @@
+/* ==========================================================================
+   Percantik — lapisan tampilan tambahan bertema wayang & batik kawung
+
+   Semua sentuhan baru ada di berkas ini, tanpa mengubah page.css / main.css.
+   Untuk kembali ke tampilan sebelumnya cukup hapus baris
+   <link rel="stylesheet" href="assets/css/percantik.css" /> di index.html
+   (serta blok "percantik" kecil di footer index.html, jika ingin).
+
+   Isi:
+   0. Warna & ornamen
+   1. Ornamen kawung di bawah judul bagian
+   2. Transisi halus antar-bagian
+   3. Hitung mundur: kotak kaca
+   4. Love Story: kartu bergaris waktu
+   5. Penutup & footer
+   ========================================================================== */
+
+/* 0. Warna & ornamen ------------------------------------------------------ */
+
+:root {
+  --pc-marun: #7c2527;
+  --pc-marun-gelap: #5e1b1d;
+  --pc-krem: #fff0e5;
+  --pc-footer: #853638;
+  --pc-transisi: 64px; /* tinggi area peralihan warna antar-bagian */
+  /* motif kawung: garis – kawung – garis (dipakai sebagai mask, warnanya ikut teks) */
+  --pc-kawung: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 16'%3E %3Cdefs%3E%3ClinearGradient id='a'%3E%3Cstop offset='0' stop-opacity='0'/%3E%3Cstop offset='1'/%3E%3C/linearGradient%3E %3ClinearGradient id='b' x1='1' x2='0'%3E%3Cstop offset='0' stop-opacity='0'/%3E%3Cstop offset='1'/%3E%3C/linearGradient%3E%3C/defs%3E %3Crect x='2' y='7.5' width='52' height='1' fill='url(%23a)'/%3E%3Crect x='86' y='7.5' width='52' height='1' fill='url(%23b)'/%3E %3Ccircle cx='57.5' cy='8' r='1.3'/%3E%3Ccircle cx='82.5' cy='8' r='1.3'/%3E%3Cg transform='translate(70 8) rotate(45)'%3E %3Cellipse cx='0' cy='-3.7' rx='2.3' ry='3.3'/%3E%3Cellipse cx='0' cy='3.7' rx='2.3' ry='3.3'/%3E %3Cellipse cx='-3.7' cy='0' rx='3.3' ry='2.3'/%3E%3Cellipse cx='3.7' cy='0' rx='3.3' ry='2.3'/%3E%3C/g%3E%3C/svg%3E");
+  --pc-kawung-tegak: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 44'%3E %3Cdefs%3E%3ClinearGradient id='a' x2='0' y2='1'%3E%3Cstop offset='0' stop-opacity='0'/%3E%3Cstop offset='1'/%3E%3C/linearGradient%3E %3ClinearGradient id='b' x2='0' y1='1' y2='0'%3E%3Cstop offset='0' stop-opacity='0'/%3E%3Cstop offset='1'/%3E%3C/linearGradient%3E%3C/defs%3E %3Crect x='7.5' y='0' width='1' height='13' fill='url(%23a)'/%3E%3Crect x='7.5' y='31' width='1' height='13' fill='url(%23b)'/%3E%3Cg transform='translate(8 22) rotate(45)'%3E %3Cellipse cx='0' cy='-3.7' rx='2.3' ry='3.3'/%3E%3Cellipse cx='0' cy='3.7' rx='2.3' ry='3.3'/%3E %3Cellipse cx='-3.7' cy='0' rx='3.3' ry='2.3'/%3E%3Cellipse cx='3.7' cy='0' rx='3.3' ry='2.3'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* 1. Ornamen kawung di bawah judul bagian --------------------------------- */
+
+.elementor-27243 .elementor-element.elementor-element-3f0f53a9 .elementor-heading-title::after,
+.elementor-27243 .elementor-element.elementor-element-2cac1e54 .elementor-heading-title::after,
+.elementor-27243 .elementor-element.elementor-element-766f857e .elementor-heading-title::after,
+.elementor-27243 .elementor-element.elementor-element-53f7aeda .elementor-heading-title::after,
+.elementor-27243 .elementor-element.elementor-element-42ff0d08 .elementor-heading-title::after {
+  content: "";
+  display: block;
+  width: 140px;
+  max-width: 70%;
+  height: 16px;
+  margin: 10px auto 0;
+  background-color: currentColor;
+  opacity: 0.8;
+  -webkit-mask: var(--pc-kawung) center / contain no-repeat;
+  mask: var(--pc-kawung) center / contain no-repeat;
+}
+
+/* 2. Transisi halus antar-bagian -------------------------------------------
+   Warna bagian sebelumnya dibuat memudar ke bagian berikutnya, supaya
+   pergantian krem <-> marun tidak terpotong tajam. */
+
+/* Latar bagian marun (Acara, Amplop) dibuat "diam" saat di-scroll oleh
+   page.css, sehingga warna tepinya selalu berubah. Karena itu kedua sisi
+   setiap batas dibuat memudar ke SATU warna yang sama, supaya tidak ada
+   garis sambungan di posisi scroll mana pun.
+
+   Lapisan pudar memakai ::after selebar bagian (tepi atas & bawah sekaligus);
+   isi bagian dinaikkan satu lapis agar tidak ikut tertutup. */
+.elementor-27243 .elementor-element.elementor-element-57dc2aaf::after,
+.elementor-27243 .elementor-element.elementor-element-cf93cf2::after,
+.elementor-27243 .elementor-element.elementor-element-74c17604::after,
+.elementor-27243 .elementor-element.elementor-element-5eac91fb::after {
+  content: "";
+  position: absolute;
+  inset: -1px 0; /* lebih 1px agar tidak ada celah tipis di sambungan */
+  pointer-events: none;
+  z-index: 0;
+}
+.elementor-27243 .elementor-element.elementor-element-57dc2aaf > .elementor-element,
+.elementor-27243 .elementor-element.elementor-element-cf93cf2 > .elementor-element,
+.elementor-27243 .elementor-element.elementor-element-74c17604 > .elementor-element,
+.elementor-27243 .elementor-element.elementor-element-5eac91fb > .elementor-element {
+  z-index: 1;
+}
+
+/* foto Save The Date: bawah -> marun gelap */
+.elementor-27243 .elementor-element.elementor-element-57dc2aaf::after {
+  background: linear-gradient(
+    to bottom,
+    transparent calc(100% - var(--pc-transisi)),
+    var(--pc-marun-gelap) 100%
+  );
+}
+
+/* Acara: atas dari marun gelap, bawah -> krem */
+.elementor-27243 .elementor-element.elementor-element-cf93cf2::after {
+  background: linear-gradient(
+    to bottom,
+    var(--pc-marun-gelap) 0,
+    transparent var(--pc-transisi),
+    transparent calc(100% - var(--pc-transisi)),
+    var(--pc-krem) 100%
+  );
+}
+
+/* Love Story & Galeri (krem): tepi atas & bawah dipastikan krem polos */
+.elementor-27243 .elementor-element.elementor-element-74c17604::after {
+  background: linear-gradient(
+    to bottom,
+    var(--pc-krem) 0,
+    transparent var(--pc-transisi),
+    transparent calc(100% - var(--pc-transisi)),
+    var(--pc-krem) 100%
+  );
+}
+
+/* Amplop Digital: latarnya ikut ter-scroll (tidak "diam"), karena pada
+   bagian sependek ini latar diam justru memunculkan garis tipis gelap
+   di sambungan atas */
+@supports (-webkit-clip-path: polygon(0 0, 0 10%, 10% 10%)) or
+  (clip-path: polygon(0 0, 0 10%, 10% 10%)) {
+  .elementor-27243 .elementor-element.elementor-element-5eac91fb::before {
+    position: absolute;
+    height: 100%;
+  }
+}
+
+/* Amplop Digital (marun): atas & bawah memudar dari/ke krem */
+.elementor-27243 .elementor-element.elementor-element-5eac91fb::after {
+  background: linear-gradient(
+    to bottom,
+    var(--pc-krem) 0,
+    transparent var(--pc-transisi),
+    transparent calc(100% - var(--pc-transisi)),
+    var(--pc-krem) 100%
+  );
+}
+
+/* Penutup: latar gunungan (BG-DATES-SUNDA), tepi atas & bawah krem */
+.elementor-27243 .elementor-element.elementor-element-47455711:not(
+    .elementor-motion-effects-element-type-background
+  ) {
+  background-image:
+    linear-gradient(
+      to bottom,
+      var(--pc-krem) 0,
+      transparent var(--pc-transisi),
+      transparent calc(100% - var(--pc-transisi)),
+      var(--pc-krem) 100%
+    ),
+    /* lapisan krem tipis supaya gunungan tidak mengganggu teks */
+    linear-gradient(rgba(255, 240, 229, 0.55), rgba(255, 240, 229, 0.55)),
+    url("../images/BG-DATES-SUNDA.jpg");
+  background-size: 100% 100%, 100% 100%, cover;
+  background-position: top, top, bottom center;
+  background-repeat: no-repeat;
+}
+
+/* Penutup (krem) -> Footer (marun) */
+.elementor-27243 .elementor-element.elementor-element-6369a815:not(
+    .elementor-motion-effects-element-type-background
+  ) {
+  background-image: linear-gradient(
+    to bottom,
+    var(--pc-krem) 0,
+    rgba(255, 240, 229, 0) var(--pc-transisi)
+  );
+}
+
+/* 3. Hitung mundur: kotak kaca --------------------------------------------- */
+
+.elementor-27243 .elementor-element.elementor-element-3a0a49a2 .idb-countdown__item {
+  min-width: 62px;
+  padding: 10px 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 14px;
+  background-color: rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px rgba(30, 6, 6, 0.25);
+}
+.elementor-27243 .elementor-element.elementor-element-3a0a49a2 .idb-countdown__num {
+  line-height: 1.1;
+}
+.elementor-27243 .elementor-element.elementor-element-3a0a49a2 .idb-countdown__label {
+  margin-top: 4px;
+  font-family: "Cormorant Garamond", serif; /* sebelumnya font bawaan HP */
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+/* 4. Love Story: kartu bergaris waktu --------------------------------------- */
+
+.elementor-27243 .elementor-element.elementor-element-7c01e394 .idb-timeline__content {
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(124, 37, 39, 0.22);
+  border-radius: 16px;
+  background-color: rgba(255, 248, 242, 0.78);
+  box-shadow: 0 8px 22px rgba(124, 37, 39, 0.08);
+}
+
+/* penghubung antar-kartu: garis tipis dengan kawung di tengah */
+.elementor-27243
+  .elementor-element.elementor-element-7c01e394
+  .idb-timeline__item
+  + .idb-timeline__item {
+  margin-top: 44px;
+}
+.elementor-27243
+  .elementor-element.elementor-element-7c01e394
+  .idb-timeline__item
+  + .idb-timeline__item::before {
+  content: "";
+  position: absolute;
+  top: -44px;
+  left: 50%;
+  width: 16px;
+  height: 44px;
+  transform: translateX(-50%);
+  background-color: var(--pc-marun);
+  opacity: 0.7;
+  -webkit-mask: var(--pc-kawung-tegak) center / contain no-repeat;
+  mask: var(--pc-kawung-tegak) center / contain no-repeat;
+}
+
+.elementor-27243 .elementor-element.elementor-element-7c01e394 .idb-timeline__title::after {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 1px;
+  margin: 8px auto 0;
+  background-color: currentColor;
+  opacity: 0.45;
+}
+
+/* 5. Penutup & footer ------------------------------------------------------- */
+
+.elementor-27243 .elementor-element.elementor-element-6369a815 {
+  --padding-top: calc(var(--pc-transisi) + 4px);
+  --padding-bottom: 72px;
+}
+
+.pc-footer-salam {
+  width: 100%;
+  color: var(--pc-krem);
+  text-align: center;
+}
+.pc-footer-salam__ornamen {
+  display: block;
+  width: 120px;
+  height: 14px;
+  margin: 0 auto 10px;
+  background-color: currentColor;
+  opacity: 0.75;
+  -webkit-mask: var(--pc-kawung) center / contain no-repeat;
+  mask: var(--pc-kawung) center / contain no-repeat;
+}
+.pc-footer-salam__tanggal {
+  margin: 0;
+  font-family: "Vidaloka", serif;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+}
+
+/* 6. Bunga bergerak -----------------------------------------------------------
+   Rangkaian bunga terpisah (SUJA-FLOWERS) sudah bergoyang lewat kelas wyKN di
+   page.css. Lambang "&" berbunga di antara mempelai ikut dibuat bergoyang pelan. */
+
+.elementor-27243 .elementor-element.elementor-element-30df31aa img {
+  transform-origin: 50% 90%;
+  animation: pc-goyang 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes pc-goyang {
+  from {
+    transform: rotate(-3deg) scale(1);
+  }
+  to {
+    transform: rotate(3deg) scale(1.03);
+  }
+}
+
+/* pengunjung yang mematikan animasi di perangkatnya: bunga diam */
+@media (prefers-reduced-motion: reduce) {
+  .wyKN img,
+  .elementor-27243 .elementor-element.elementor-element-30df31aa img {
+    animation: none;
+  }
+}
+
+/* 7. Kelopak bunga berjatuhan -------------------------------------------------
+   Kelopaknya dibuat oleh assets/js/kelopak.js (jumlah, ukuran, warna, dan
+   kecepatan diatur di sana). Tiap kelopak punya tiga lapis gerak:
+   jatuh (atas -> bawah), ayun (kiri <-> kanan), dan bentuk (berputar/berkibar). */
+
+.pc-kelopak-wadah {
+  position: fixed;
+  inset: 0;
+  z-index: 1000; /* di atas sampul (#sec), tapi tidak bisa diklik */
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pc-kelopak {
+  position: absolute;
+  top: 0;
+  animation-name: pc-jatuh;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.pc-kelopak__ayun {
+  display: block;
+  animation-name: pc-ayun;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.pc-kelopak__bentuk {
+  display: block;
+  border-radius: 85% 0 85% 0; /* bentuk kelopak */
+  box-shadow: inset -1px -1px 2px rgba(124, 37, 39, 0.25);
+  animation-name: pc-kibar;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes pc-jatuh {
+  0% {
+    transform: translate3d(0, -8vh, 0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--pc-geser, 0), 105vh, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes pc-ayun {
+  from {
+    transform: translateX(-18px);
+  }
+  to {
+    transform: translateX(18px);
+  }
+}
+
+@keyframes pc-kibar {
+  from {
+    transform: rotate(-35deg) rotateY(0deg);
+  }
+  to {
+    transform: rotate(160deg) rotateY(70deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-kelopak-wadah {
+    display: none;
+  }
+}
+
+/* 8. Tipografi: teks isi lebih mudah dibaca & font seragam --------------------
+   Di HP teks isi sebelumnya 12–13px; sekarang 14px (sama dengan di desktop). */
+
+.elementor-27243 .elementor-element.elementor-element-3074722b, /* ayat Ar-Rum */
+.elementor-27243 .elementor-element.elementor-element-76217425 .elementor-heading-title, /* kalimat pembuka */
+.elementor-27243 .elementor-element.elementor-element-11d0191b, /* orang tua Ivan */
+.elementor-27243 .elementor-element.elementor-element-641bc65d, /* orang tua Dinni */
+.elementor-27243 .elementor-element.elementor-element-728c44e2, /* akad: bulan */
+.elementor-27243 .elementor-element.elementor-element-19822f13, /* akad: pukul */
+.elementor-27243 .elementor-element.elementor-element-6890c9ba, /* akad: tempat */
+.elementor-27243 .elementor-element.elementor-element-3c88e55b, /* resepsi: bulan */
+.elementor-27243 .elementor-element.elementor-element-22afb3dc, /* resepsi: pukul */
+.elementor-27243 .elementor-element.elementor-element-52146852, /* resepsi: tempat */
+.elementor-27243 .elementor-element.elementor-element-70d13d9d, /* amplop digital */
+.elementor-27243 .elementor-element.elementor-element-7e76782f /* penutup */ {
+  font-size: 14px;
+}
+
+/* detail rekening (muncul setelah "Klik Disini"): sebelumnya font bawaan HP */
+#amplop {
+  font-family: "Caudex", serif;
+}
+#amplop button {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 700;
+}
+
+/* Bunga kiri di bagian WITH LOVE diposisikan dari bawah bagian; karena ayat
+   kini lebih tinggi (14px), bunganya dinaikkan agar tetap di tempat semula
+   dan tidak menutupi awal ayat. */
+@media (max-width: 767px) {
+  .elementor-27243 .elementor-element.elementor-element-72ed73b2 {
+    bottom: 257px;
+  }
+}
