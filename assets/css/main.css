@@ -348,7 +348,7 @@ body.is-cover-closed #sec {
 --tinggi: 45vh;    /* ukuran asli bingkai */
 --zoom: 1;
 --fokus-x: 50%;
---fokus-y: 84%;   /* tampilkan bagian bawah foto, tempat pasangan berada */
+--fokus-y: 55%;   /* tampilkan bagian bawah foto, tempat pasangan berada */
   
 }
 
